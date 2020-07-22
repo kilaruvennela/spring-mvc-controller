@@ -12,7 +12,7 @@ public class Project {
 	private String name;
 
 	@SuppressWarnings("deprecation")
-	@NotBlank
+	@NotBlank(message = "You must enter the description")
 	private String description;
 
 	private Sponsor sponsor;

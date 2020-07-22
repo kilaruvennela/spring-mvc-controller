@@ -14,7 +14,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.orielly.mvc.HitCounter;
 import com.orielly.mvc.data.entities.Project;
 import com.orielly.mvc.data.services.ProjectService;
 import com.orielly.mvc.data.validators.ProjectValidator;
@@ -24,7 +27,10 @@ import com.orielly.mvc.data.validators.ProjectValidator;
 public class ProjectController {
 
 	@Autowired
-	public ProjectService projectService;
+	ProjectService projectService;
+
+	@Autowired
+	HitCounter hitCounter;
 
 	@RequestMapping("/find")
 	public String find(Model model) {
@@ -34,6 +40,10 @@ public class ProjectController {
 
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
 	public String addProject(Model model) {
+
+		hitCounter.setHits(hitCounter.getHits() + 1);
+		System.out.println(hitCounter.getHits());
+
 		model.addAttribute("types", new ArrayList<String>() {
 			{
 				add("");
@@ -47,16 +57,14 @@ public class ProjectController {
 	}
 
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public String saveProject(@Valid @ModelAttribute Project project, Errors errors) {
+	public String saveProject(@Valid @ModelAttribute Project project, Errors errors,
+			RedirectAttributes redirectAttributes) {
 		System.out.println("invoking save project");
 
-		if (!errors.hasErrors()) {
-			System.out.println("The project validated");
-		} else {
-			System.out.println("The project did not validate.");
-		}
-
-		return "project_add";
+		project.setProjectId(55L);
+		this.projectService.save(project);
+		redirectAttributes.addFlashAttribute("project", project);
+		return "redirect:/home/";
 	}
 
 	@RequestMapping(value = "/{projectId}")
@@ -80,5 +88,11 @@ public class ProjectController {
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
 		binder.addValidators(new ProjectValidator());
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/api/{projectId}")
+	public Project findProjectObject(@PathVariable("projectId") Long projectId) {
+		return this.projectService.find(projectId);
 	}
 }

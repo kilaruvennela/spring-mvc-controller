@@ -80,6 +80,12 @@
 		
 		</form:form>
 		
+		<spring:url value="/resource/upload" var="uploadUrl"/>
+		<form method="POST" enctype="multipart/form-data" action="${uploadUrl}">
+			File to Upload:  <input type="file" name="file"><br/>
+			<input type="submit" value="Upload">	
+		</form>	
+		
 	</div>
 </body>
 </html>

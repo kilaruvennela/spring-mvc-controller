@@ -46,4 +46,9 @@ public class ProjectService {
 		return project;
 	}
 
+	public void save(Project project) {
+		this.projects.add(project);
+
+	}
+
 }

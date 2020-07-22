@@ -19,6 +19,19 @@ public class Resource {
 
 	private String notes;
 
+	public Resource(Long resourceId, String name, String type, BigDecimal cost, String unitOfMeasure) {
+		super();
+		this.resourceId = resourceId;
+		this.name = name;
+		this.type = type;
+		this.cost = cost;
+		this.unitOfMeasure = unitOfMeasure;
+	}
+
+	public Resource() {
+
+	}
+
 	public Long getResourceId() {
 		return resourceId;
 	}

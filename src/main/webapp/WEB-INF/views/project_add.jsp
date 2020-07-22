@@ -28,7 +28,7 @@
 					<label for="project-name">Name</label>
 					<form:input path="name" cssClass="form-control" id="project-name"/>
 				</div>
-				
+				<form:errors path="name"/>
 				<div class="form-group">
 					<label for="project-type">Type</label>
 					<form:select path="type" cssClass="selectpicker" items="${types}"></form:select>
@@ -64,7 +64,7 @@
 					<label for="project-name">Description</label>
 					<form:textarea cssClass="form-control" path="description" rows="3"></form:textarea>
 				</div>
-				
+				<form:errors path="description"/>
 				<div class="form-group">
 					<label for="poc1">Point of Contact 1</label>
 					<form:input path="pointsOfContact[0]" cssClass="form-control" id="poc1"/>
